@@ -17,7 +17,7 @@ func main() {
 	wg.Add(3)
 	//启动线程A
 	go func() {
-		WaitingForSmallerToComplete(0, nums)
+		WaitingToStart(0, nums)
 
 		fmt.Println("First")
 		aToB <- struct{}{}
@@ -27,7 +27,7 @@ func main() {
 
 	//启动线程B
 	go func() {
-		WaitingForSmallerToComplete(1, nums)
+		WaitingToStart(1, nums)
 
 		//Do stuff here
 		<-aToB
@@ -38,7 +38,7 @@ func main() {
 
 	//启动线程C
 	go func() {
-		WaitingForSmallerToComplete(2, nums)
+		WaitingToStart(2, nums)
 
 		//Do stuff here
 		<-bToC
@@ -48,8 +48,8 @@ func main() {
 	wg.Wait()
 }
 
-// WaitingForSmallerToComplete 排在第n位的线程，等待第n-1位的线程执行完毕。
-func WaitingForSmallerToComplete(index int, nums []int) {
+// WaitingToStart 排在第n位的线程，等待第n-1位的线程执行完毕。
+func WaitingToStart(index int, nums []int) {
 	d := time.Duration(nums[index]*2) * time.Second
 	time.Sleep(d)
 }
